@@ -20,7 +20,8 @@
 )
 
 (deffacts participantes
-	(persona (nombre "arturo")(sexo "h")(edad 24)(altura 173)(peso 73)(cuesta_hablar si)(gusta_salir no)(amigos 10)(religion ninguna)(twitter si)(facebook si))
+	(persona (nombre "arturo")(sexo "h")(edad 24)(altura 173)(peso 73)(cuesta_hablar si)(gusta_salir no)(amigos 21)(religion "ninguna")(twitter si)(facebook si))
+  (persona (nombre "alguien")(sexo "h")(edad 24)(altura 173)(peso 73)(cuesta_hablar si)(gusta_salir no)(amigos 10)(religion "ninguna")(twitter si)(facebook si))
 )
 
 (defglobal ?*crlf* = "
@@ -31,17 +32,27 @@
 
 (defmodule clasificar)
 
-(defrule print-banner
+;una persona es timida si le cuesta hablar
+(defrule timidez
+  ?persona <-(persona(nombre ?n)(cuesta_hablar ?c&:(= ?c si)))
   =>
-  (printout t "Type your name and press Enter> ")
-  (bind ?name (read))
-  (printout t crlf "**********************************" crlf)
-  (printout t " Hello, " ?name "." crlf)
-  (printout t " Welcome to the tax forms advisor" crlf)
-  (printout t " Please answer the questions and" crlf)
-  (printout t " I will tell you what tax forms" crlf)
-  (printout t " you may need to file." crlf)
-  (printout t "**********************************" crlf crlf))
+  (assert(timida ?persona))
+  (printout t " Eres timido " ?n "." crlf)
+)
+
+(defrule muchos-amigos
+  ?persona <-(persona(nombre ?n)(amigos ?a&:(> ?a 20)))
+  =>
+  (assert(muchos-amigos ?persona))
+  (printout t "Tienes muchos amigos " ?n "." crlf)
+)
+
+(defrule pocos-amigos
+  ?persona <-(persona(nombre ?n)(amigos ?a&:(< ?a 21)))
+  =>
+  (assert(pocos-amigos ?persona))
+  (printout t "Tienes pocos amigos " ?n "." crlf)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programa
@@ -50,7 +61,8 @@
   (reset)
   (focus clasificar)
   (run)
-  (watch all))
+  (facts)
+)
 
-(while TRUE
-  (run-system))
+;(while TRUE
+  (run-system);)
