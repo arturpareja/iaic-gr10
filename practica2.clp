@@ -54,6 +54,15 @@
   (printout t "Tienes pocos amigos " ?n "." crlf)
 )
 
+;muchos amigos, twitter y facebook => sociable
+(defrule sociable
+  ?persona <-(persona(nombre ?n)(twitter ?tw&:(= ?tw si))(facebook ?fc&:(= ?fc si)))
+  (muchos-amigos ?persona)
+  =>
+  (assert(sociable ?persona))
+  (printout t "Eres sociable " ?n "." crlf)
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programa
 
