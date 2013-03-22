@@ -6,36 +6,37 @@
 ;; Modulo MAIN
 
 (deftemplate persona
-  (slot nombre(type SYMBOL)(default "participante")) ; string
-  (slot sexo  (type SYMBOL)) ; h-m
-  (slot edad  (type NUMBER)(default 25)) ; num
-  (slot altura(type NUMBER)(default 170)) ; num
-  (slot peso  (type NUMBER)(default 60)) ; num
-  (slot cuesta_hablar(type SYMBOL)(default FALSE)) ; bool
-  (slot gusta_salir  (type SYMBOL)(default FALSE)) ; bool
-  (slot amigos(type NUMBER)(default 5))	; num
-  (slot religion(type SYMBOL)(default "ninguna")) ; string
-  (slot twitter (type SYMBOL)(default FALSE)) ; bool
-  (slot facebook(type SYMBOL)(default FALSE)) ; bool
-  (slot timido  (type SYMBOL))	; bool
-  (slot sociable(type SYMBOL)) ; bool
-  (slot muchos-amigos(type SYMBOL)) ; bool
-  (slot caracter(type SYMBOL));introvertido extrovertido inclasificable))
+  (slot nombre(type SYMBOL)(default "participante")) ;string
+  (slot sexo  (type SYMBOL)) ;h-m
+  (slot edad  (type NUMBER)(default 25))  ;num
+  (slot altura(type NUMBER)(default 170)) ;num
+  (slot peso  (type NUMBER)(default 60))  ;num
+  (slot cuesta_hablar(type SYMBOL)(default FALSE)) ;bool
+  (slot gusta_salir  (type SYMBOL)(default FALSE)) ;bool
+  (slot amigos(type NUMBER)(default 5))	;num
+  (slot religion(type SYMBOL)(default "ninguna")) ;string
+  (slot twitter (type SYMBOL)(default FALSE)) ;bool
+  (slot facebook(type SYMBOL)(default FALSE)) ;bool
+  (slot timido  (type SYMBOL))	    ;bool
+  (slot sociable(type SYMBOL))      ;bool
+  (slot muchos-amigos(type SYMBOL)) ;bool
+  (slot caracter(type SYMBOL)) ;introvertido extrovertido inclasificable
 )
 
 (deftemplate compatibles
-	(slot persona1) 
-	(slot persona2) 
+	(slot persona1) ;template persona
+	(slot persona2) ;template persona
+  (slot afinidad(type NUMBER)) ;num 
 )
 
 (deftemplate citados
-	(slot persona1) 
-	(slot persona2) 
+	(slot persona1) ;template persona
+	(slot persona2) ;template persona
+  (slot tipo-cita(type SYMBOL)) ;normal magica 
 )
 
 
 (deffacts participantes
-	;(persona (nombre "arturo")(sexo "h")(edad 24)(altura 173)(peso 73)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 21)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido TRUE)(sociable FALSE)(muchos-amigos TRUE)(caracter introvertido))
 	
   (persona (nombre "alguien1")(sexo h)(edad 24)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 2)(religion "ninguna")(twitter TRUE)(facebook TRUE))
   
@@ -82,7 +83,7 @@
   (modify ?persona (sociable (and ?m (and ?tw ?fc))))
 )
 
-; Si a una persona le gusta salir y es muy sociable entonces es carácter extrovertido.
+;Si a una persona le gusta salir y es muy sociable entonces es carácter extrovertido.
 (defrule caracter-extrovertido
   (declare (salience 97))
    ?persona <- (persona(gusta_salir ?gus&:(eq ?gus TRUE))(sociable ?soc&:(eq ?soc TRUE)))
@@ -145,10 +146,9 @@
 	?p2<-(persona(nombre ?nom2)(edad ?eda2))
 	(compatibles (persona1 ?p1)(persona2 ?p2))
 	(test (< (abs (- ?eda1 ?eda2)) 10))
-	(not (citados (persona1 ?p1)))
-	(not (citados (persona2 ?p1)))
-	(not (citados (persona2 ?p2)))
-	(not (citados (persona1 ?p2)))
+  ;Sólo se citan una vez a las mismas dos personas.
+	(not (citados (persona1 ?p1)(persona2 ?p2)))
+  (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)))
 	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
@@ -161,10 +161,9 @@
 	(compatibles (persona1 ?p1)(persona2 ?p2))
 	(test (and (> ?eda1 50)(> ?eda2 50)))
 	(test (> (abs (- ?eda1 ?eda2)) 10))
-	(not (citados (persona1 ?p1)))
-	(not (citados (persona2 ?p1)))
-	(not (citados (persona2 ?p2)))
-	(not (citados (persona1 ?p2)))
+  ;Sólo se citan una vez a las mismas dos personas.
+	(not (citados (persona1 ?p1)(persona2 ?p2)))
+  (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)))
 	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
