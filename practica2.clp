@@ -113,35 +113,41 @@
 ;; Modulo compatibilizar
 (defmodule compatibilizar)
 
-(deffunction calc-afinidad (?nomb1 ?nomb2 ?peso1 ?peso2)
-  (if (eq ?peso1 ?peso2) then
-      (printout t ?nomb1 " y " ?nomb2 " son muy afines." crlf)
-      (return 99)
-   else (return 0)
+(deffunction calc-afinidad (?nomb1 ?nomb2 ?peso1 ?peso2 ?alt1 ?alt2) 
+  (bind ?af 0)
+
+  ;si la diferencia de IMC entre la persona 1 y la persona 2 es menos que 5 sumamos 1 a la afinidad
+  (bind ?imc1 (div ?peso1 (* ?alt1 ?alt1)))
+  (bind ?imc2 (div ?peso2 (* ?alt2 ?alt2)))
+  (if (<= (abs (- ?imc1 ?imc2)) 5) then
+      (printout t  " imc 1" ?imc1 " ; imc2" ?imc2 crlf)
+      (bind ?af (+ ?af 1))
   )  
+   (printout t   ?nomb1 " y"  ?nomb2 "tienen una afinidad de " ?af crlf)
+  (return ?af)
 )
 
 ;Dos personas son compatibles si tienen distinto sexo, la misma religión y son ambas introvertidas, extrovertidas, o no clasificables.
 (defrule compatibles1
-	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 ) (caracter ?caract))
-	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 ) (caracter ?caract))
+	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 ) (caracter ?caract)(altura ?alt1))
+	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 ) (caracter ?caract)(altura ?alt2))
   (test(or (eq ?caract inclasificable)(or (eq ?caract extrovertido)(eq ?caract introvertido))))
 	(test(<> ?sex1 ?sex2))
 	(test (= (str-compare ?rel1 ?rel2) 0))
 	;solo se comprueban duplicados a la hora de hacer las citas
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2))))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2 ?alt1 ?alt2))))
 )
 ;También consideramos compatibles a las que ambas son no-clasificables, tienen distinto sexo, distinta religión, y tienen muchos Amigos.
 (defrule compatibles2
-	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 )(muchos-amigos ?muc)(caracter ?caract))
-	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 )(muchos-amigos ?muc)(caracter ?caract))
+	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 )(muchos-amigos ?muc)(caracter ?caract)(altura ?alt1))
+	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 )(muchos-amigos ?muc)(caracter ?caract)(altura ?alt2))
 	(test(<> ?sex1 ?sex2))
 	(test (<> (str-compare ?rel1 ?rel2) 0))
 	(test (eq ?caract inclasificable))
 	(test (eq ?muc TRUE))
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2))))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2 ?alt1 ?alt2))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -178,7 +184,7 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
+	;(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
 )
 
 ;También citamos a las personas compatibles con diferencia de edad mayor de 10 años si su edad está por encima de los 50 años.
@@ -194,7 +200,7 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
+	;(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -204,15 +210,16 @@
 (defrule mostrar-template
 	?persona <-(persona (nombre ?nom)(sexo ?sex)(edad ?eda)(altura ?alt)(peso ?pes)(cuesta_hablar ?cue)(gusta_salir ?gus)(amigos ?ami)(religion ?rel)(twitter ?twi)(facebook ?fac)(timido ?tim)(sociable ?soc)(muchos-amigos ?muc)(caracter ?car))
 	=>
-	(printout t "[nombre "?nom ", sexo " ?sex ", edad " ?eda ", altura " ?alt ", peso "?pes ", cuesta_hablar " ?cue ", gusta_salir " ?gus ", num amigos " ?ami ", religion " ?rel ", twitter " ?twi ", facebook" ?fac ", timido "?tim ", sociable " ?soc ", muchos_amigos " ?muc ", caracter " ?car "]"  crlf)
+	;(printout t "[nombre "?nom ", sexo " ?sex ", edad " ?eda ", altura " ?alt ", peso "?pes ", cuesta_hablar " ?cue ", gusta_salir " ?gus ", num amigos " ?ami ", religion " ?rel ", twitter " ?twi ", facebook" ?fac ", timido "?tim ", sociable " ?soc ", muchos_amigos " ?muc ", caracter " ?car "]"  crlf)
 )
 
 (defrule mostrar-compatible1
 	?p1<-(persona(nombre ?nom1))
 	?p2<-(persona(nombre ?nom2))
-	(compatibles (persona1 ?p1)(persona2 ?p2))
+	(compatibles (persona1 ?p1)(persona2 ?p2)(afinidad ?af))
 	=>
-	(printout t ?nom1 " y " ?nom2 " son compatibles ^^" crlf)
+	;(printout t ?nom1 " y " ?nom2 " son compatibles ^^" crlf)
+  (printout t ?nom1 " y " ?nom2 " tienen una compatibilidad de " ?af crlf)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
