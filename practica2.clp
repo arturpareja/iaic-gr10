@@ -26,7 +26,7 @@
 (deftemplate compatibles
 	(slot persona1) ;template persona
 	(slot persona2) ;template persona
-  (slot afinidad(type NUMBER)) ;num 
+  (slot afinidad(type NUMBER)(default 0)) ;num 
 )
 
 (deftemplate citados
@@ -38,17 +38,17 @@
 
 (deffacts participantes
 	
-  (persona (nombre "alguien1")(sexo h)(edad 24)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 2)(religion "ninguna")(twitter TRUE)(facebook TRUE))
+  (persona (nombre "alguien1")(sexo h)(edad 24)(altura 173)(peso 50)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 2)(religion "ninguna")(twitter TRUE)(facebook TRUE))
   
-  (persona (nombre "alguien2")(sexo m)(edad 24)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 2)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "alguien2")(sexo m)(edad 24)(altura 173)(peso 50)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 2)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
   
-  (persona (nombre "alguien3")(sexo h)(edad 24)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "catolica")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "alguien3")(sexo h)(edad 24)(altura 173)(peso 60)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "catolica")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
   
-  (persona (nombre "alguien4")(sexo m)(edad 24)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "alguien4")(sexo m)(edad 24)(altura 173)(peso 60)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
   
-  (persona (nombre "alguien5")(sexo h)(edad 84)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "catolica")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "alguien5")(sexo h)(edad 84)(altura 173)(peso 70)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "catolica")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
   
-  (persona (nombre "alguien6")(sexo m)(edad 54)(altura 173)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "alguien6")(sexo m)(edad 54)(altura 173)(peso 70)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 22)(religion "ninguna")(twitter TRUE)(facebook TRUE)(timido 0)(sociable 0)(muchos-amigos 0)(caracter 0))
 )
 
 (defglobal ?*crlf* = "
@@ -113,35 +113,62 @@
 ;; Modulo compatibilizar
 (defmodule compatibilizar)
 
+(deffunction calc-afinidad (?nomb1 ?nomb2 ?peso1 ?peso2)
+  (if (eq ?peso1 ?peso2) then
+      (printout t ?nomb1 " y " ?nomb2 " son muy afines." crlf)
+      (return 99)
+   else (return 0)
+  )  
+)
+
 ;Dos personas son compatibles si tienen distinto sexo, la misma religión y son ambas introvertidas, extrovertidas, o no clasificables.
 (defrule compatibles1
-	?p1 <- (persona(nombre ?nom1)(sexo ?sex1 )(religion ?rel1 ) (caracter ?caract))
-	?p2 <- (persona(nombre ?nom2)(sexo ?sex2 )(religion ?rel2 ) (caracter ?caract))
+	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 ) (caracter ?caract))
+	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 ) (caracter ?caract))
   (test(or (eq ?caract inclasificable)(or (eq ?caract extrovertido)(eq ?caract introvertido))))
 	(test(<> ?sex1 ?sex2))
 	(test (= (str-compare ?rel1 ?rel2) 0))
 	;solo se comprueban duplicados a la hora de hacer las citas
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2))))
 )
 ;También consideramos compatibles a las que ambas son no-clasificables, tienen distinto sexo, distinta religión, y tienen muchos Amigos.
 (defrule compatibles2
-	?p1 <- (persona(nombre ?nom1)(sexo ?sex1 )(religion ?rel1 )(muchos-amigos ?muc)(caracter ?caract))
-	?p2 <- (persona(nombre ?nom2)(sexo ?sex2 )(religion ?rel2 )(muchos-amigos ?muc)(caracter ?caract))
+	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 )(muchos-amigos ?muc)(caracter ?caract))
+	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 )(muchos-amigos ?muc)(caracter ?caract))
 	(test(<> ?sex1 ?sex2))
 	(test (<> (str-compare ?rel1 ?rel2) 0))
 	(test (eq ?caract inclasificable))
 	(test (eq ?muc TRUE))
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modulo citar
 (defmodule citar)
 
+(defrule cita-magica
+  (declare (salience 100))
+  ?p1<-(persona(nombre ?nom1)(edad ?eda1))
+  ?p2<-(persona(nombre ?nom2)(edad ?eda2))
+  (compatibles (persona1 ?p1)(persona2 ?p2)(afinidad ?afin&:(> ?afin 90)))
+  ;Sólo se citan una vez a las mismas dos personas.
+  (not (citados (persona1 ?p1)(persona2 ?p2)))
+  (not (citados (persona1 ?p2)(persona2 ?p1)))
+  ;Sólo una cita mágica por persona
+  (not (citados (persona1 ?p1)(tipo-cita ?tc&:(eq ?tc magica))))
+  (not (citados (persona1 ?p2)(tipo-cita ?tc&:(eq ?tc magica))))
+  (not (citados (persona2 ?p1)(tipo-cita ?tc&:(eq ?tc magica))))
+  (not (citados (persona2 ?p2)(tipo-cita ?tc&:(eq ?tc magica))))
+  =>
+  (assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita magica)))
+  (printout t ?nom1 " y " ?nom2 " tiene cita magica!!!!!!!!!" crlf)
+)
+
 ;Se puede concertar una cita si dos personas son compatibles, siempre que su diferencia de edad sea menor de 10 años. Sólo se citan una vez a las mismas dos personas.
 (defrule citar1
+  (declare (salience 99))
 	?p1<-(persona(nombre ?nom1)(edad ?eda1))
 	?p2<-(persona(nombre ?nom2)(edad ?eda2))
 	(compatibles (persona1 ?p1)(persona2 ?p2))
@@ -150,12 +177,13 @@
 	(not (citados (persona1 ?p1)(persona2 ?p2)))
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
-	(assert(citados(persona1 ?p1)(persona2 ?p2)))
+	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
 	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
 )
 
 ;También citamos a las personas compatibles con diferencia de edad mayor de 10 años si su edad está por encima de los 50 años.
 (defrule citar2
+  (declare (salience 99))
 	?p1<-(persona(nombre ?nom1)(edad ?eda1))
 	?p2<-(persona(nombre ?nom2)(edad ?eda2))
 	(compatibles (persona1 ?p1)(persona2 ?p2))
@@ -165,7 +193,7 @@
 	(not (citados (persona1 ?p1)(persona2 ?p2)))
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
-	(assert(citados(persona1 ?p1)(persona2 ?p2)))
+	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
 	(printout t ?nom1 " y " ?nom2 " estan citados ou yeah" crlf)
 )
 
