@@ -21,7 +21,11 @@
   (slot sociable(type SYMBOL))      ;bool
   (slot muchos-amigos(type SYMBOL)) ;bool
   (slot caracter(type SYMBOL)) ;introvertido extrovertido inclasificable
-  (slot fumador(type SYMBOL)) ;bool
+  (slot fumador(type SYMBOL))       ;bool: si es fumador o no
+  (slot nuevas-exp(type SYMBOL))    ;bool: busca o no nuevas experiencias
+  (slot responsable(type SYMBOL))   ;bool: es responsable o no
+  (slot amable(type SYMBOL))        ;bool: si es amable o no
+  (slot rel-estable(type SYMBOL))   ;bool: si busca una relación estable o no
 )
 
 (deftemplate compatibles
@@ -39,85 +43,85 @@
 
 (deffacts participantes
 
-  (persona (nombre "persona1")(sexo h)(edad 31)(altura 184)(peso 80)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 10)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador TRUE))
+  (persona (nombre "persona1")(sexo h)(edad 31)(altura 184)(peso 80)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 10)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona2")(sexo m)(edad 30)(altura 170)(peso 67)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "judia")(twitter TRUE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona2")(sexo m)(edad 30)(altura 170)(peso 67)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "judia")(twitter TRUE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona3")(sexo h)(edad 44)(altura 163)(peso 60)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 9)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona3")(sexo h)(edad 44)(altura 163)(peso 60)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 9)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona4")(sexo m)(edad 24)(altura 154)(peso 64)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 22)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona4")(sexo m)(edad 24)(altura 154)(peso 64)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 22)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona5")(sexo h)(edad 84)(altura 172)(peso 74)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 13)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona5")(sexo h)(edad 84)(altura 172)(peso 74)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 13)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona6")(sexo m)(edad 54)(altura 187)(peso 86)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 4)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona6")(sexo m)(edad 54)(altura 187)(peso 86)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 4)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona7")(sexo h)(edad 45)(altura 190)(peso 57)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 7)(religion "budista")(twitter FALSE)(facebook TRUE)(fumador TRUE))
   
-  (persona (nombre "persona8")(sexo m)(edad 51)(altura 157)(peso 94)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 16)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona8")(sexo m)(edad 51)(altura 157)(peso 94)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 16)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona9")(sexo h)(edad 26)(altura 200)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 26)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona9")(sexo h)(edad 26)(altura 200)(peso 73)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 26)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona10")(sexo m)(edad 72)(altura 175)(peso 74)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 5)(religion "ninguna")(twitter TRUE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona10")(sexo m)(edad 72)(altura 175)(peso 74)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 5)(religion "ninguna")(twitter TRUE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona11")(sexo h)(edad 65)(altura 175)(peso 63)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 26)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona11")(sexo h)(edad 65)(altura 175)(peso 63)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 26)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona12")(sexo m)(edad 54)(altura 163)(peso 81)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 23)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona12")(sexo m)(edad 54)(altura 163)(peso 81)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 23)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona13")(sexo h)(edad 19)(altura 174)(peso 58)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 11)(religion "budista")(twitter TRUE)(facebook TRUE)(fumador TRUE))
   
-  (persona (nombre "persona14")(sexo m)(edad 32)(altura 165)(peso 59)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 17)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona14")(sexo m)(edad 32)(altura 165)(peso 59)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 17)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona15")(sexo h)(edad 18)(altura 184)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 5)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona15")(sexo h)(edad 18)(altura 184)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 5)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona16")(sexo m)(edad 58)(altura 189)(peso 73)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 27)(religion "ninguna")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona16")(sexo m)(edad 58)(altura 189)(peso 73)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 27)(religion "ninguna")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona17")(sexo h)(edad 69)(altura 167)(peso 95)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 1)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona17")(sexo h)(edad 69)(altura 167)(peso 95)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 1)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona18")(sexo m)(edad 41)(altura 182)(peso 99)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 29)(religion "budista")(twitter TRUE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona18")(sexo m)(edad 41)(altura 182)(peso 99)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 29)(religion "budista")(twitter TRUE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona19")(sexo h)(edad 30)(altura 163)(peso 59)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 27)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador FALSE))
   
-  (persona (nombre "persona20")(sexo m)(edad 30)(altura 191)(peso 68)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona20")(sexo m)(edad 30)(altura 191)(peso 68)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona21")(sexo h)(edad 53)(altura 158)(peso 73)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 25)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona21")(sexo h)(edad 53)(altura 158)(peso 73)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 25)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona22")(sexo m)(edad 60)(altura 185)(peso 78)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 4)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona22")(sexo m)(edad 60)(altura 185)(peso 78)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 4)(religion "islamica")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona23")(sexo h)(edad 38)(altura 178)(peso 91)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 8)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona23")(sexo h)(edad 38)(altura 178)(peso 91)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 8)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona24")(sexo m)(edad 40)(altura 162)(peso 63)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 29)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona24")(sexo m)(edad 40)(altura 162)(peso 63)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 29)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
 
   (persona (nombre "persona25")(sexo h)(edad 27)(altura 194)(peso 78)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 6)(religion "budista")(twitter FALSE)(facebook TRUE)(fumador FALSE))
   
-  (persona (nombre "persona26")(sexo m)(edad 36)(altura 156)(peso 57)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 9)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona26")(sexo m)(edad 36)(altura 156)(peso 57)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 9)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona27")(sexo h)(edad 25)(altura 168)(peso 58)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 24)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona27")(sexo h)(edad 25)(altura 168)(peso 58)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 24)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona28")(sexo m)(edad 21)(altura 196)(peso 74)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 24)(religion "budista")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona28")(sexo m)(edad 21)(altura 196)(peso 74)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 24)(religion "budista")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona29")(sexo h)(edad 84)(altura 154)(peso 62)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 5)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona29")(sexo h)(edad 84)(altura 154)(peso 62)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 5)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona30")(sexo m)(edad 54)(altura 167)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 16)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona30")(sexo m)(edad 54)(altura 167)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 16)(religion "judia")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona31")(sexo h)(edad 17)(altura 172)(peso 93)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 13)(religion "islamica")(twitter FALSE)(facebook FALSE)(fumador FALSE))
   
-  (persona (nombre "persona32")(sexo m)(edad 24)(altura 162)(peso 52)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 5)(religion "islamica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona32")(sexo m)(edad 24)(altura 162)(peso 52)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 5)(religion "islamica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona33")(sexo h)(edad 42)(altura 179)(peso 52)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 25)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona33")(sexo h)(edad 42)(altura 179)(peso 52)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 25)(religion "catolica")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona34")(sexo m)(edad 43)(altura 178)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 22)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona34")(sexo m)(edad 43)(altura 178)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 22)(religion "judia")(twitter FALSE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona35")(sexo h)(edad 38)(altura 194)(peso 63)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 32)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona35")(sexo h)(edad 38)(altura 194)(peso 63)(cuesta_hablar FALSE)(gusta_salir FALSE)(amigos 32)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona36")(sexo m)(edad 54)(altura 173)(peso 79)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 27)(religion "islamica")(twitter TRUE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona36")(sexo m)(edad 54)(altura 173)(peso 79)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 27)(religion "islamica")(twitter TRUE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona37")(sexo h)(edad 62)(altura 173)(peso 59)(cuesta_hablar TRUE)(gusta_salir TRUE)(amigos 23)(religion "judia")(twitter FALSE)(facebook FALSE)(fumador TRUE))
   
-  (persona (nombre "persona38")(sexo m)(edad 45)(altura 153)(peso 66)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "islamica")(twitter TRUE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona38")(sexo m)(edad 45)(altura 153)(peso 66)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "islamica")(twitter TRUE)(facebook TRUE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona39")(sexo h)(edad 43)(altura 181)(peso 77)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 16)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona39")(sexo h)(edad 43)(altura 181)(peso 77)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 16)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
-  (persona (nombre "persona40")(sexo m)(edad 50)(altura 165)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 18)(religion "ninguna")(twitter TRUE)(facebook TRUE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
+  (persona (nombre "persona40")(sexo m)(edad 50)(altura 165)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 18)(religion "ninguna")(twitter TRUE)(facebook TRUE)(fumador TRUE)(nuevas-exp TRUE)(responsable TRUE)(amable TRUE)(rel-estable TRUE))
   
   
 )
@@ -184,6 +188,14 @@
 ;; Modulo compatibilizar
 (defmodule compatibilizar)
 
+;mismos objetivos: apertura a nuevas experiencias, responsabilidad, amabilidad y estabilidad emocional
+(deffunction afinidad-objetivos (?nuevas1 ?nuevas2 ?resp1 ?resp2 ?amab1 ?amab2 ?est1 ?est2)
+  ( if (and (and (eq ?nuevas1 ?nuevas2) (eq ?resp1 ?resp2) ) (and (eq ?amab1 ?amab2) (eq ?est1 ?est2)) ) then
+         (return 1)
+    else (return 0)
+  )
+)
+
 ;si la diferencia de IMC entre la persona 1 y la persona 2 es menor que 5
 (deffunction afinidad-imc (?pes1 ?pes2 ?alt1 ?alt2)
   (bind ?altm1 (/ ?alt1 100)); altura1 en metros
@@ -206,9 +218,10 @@
 
 ;calculo del grado de afinidad, superior a 90 se establece cita mágica
 (deffunction calc-afinidad (?p1 ?p2)
-  (bind ?a1 (* 89 (afinidad-imc ?pes1 ?pes2 ?alt1 ?alt2)))
+  (bind ?a1 (* 69 (afinidad-imc ?pes1 ?pes2 ?alt1 ?alt2)))
   (bind ?a2 (* 10 (afinidad-fum ?fum1 ?fum2)))
-  (bind ?afin (+ ?a1 ?a2))
+  (bind ?a3 (* 19 (afinidad-objetivos ?nuevas1 ?nuevas2 ?resp1 ?resp2 ?amab1 ?amab2 ?est1 ?est2)))
+  (bind ?afin (+ ?a1 (+ ?a2 ?a3)))
   (if (> ?afin 90) then
     (printout t ?nom1 " y " ?nom2 " tienen grado de afinidad: " ?afin crlf)
   )
@@ -220,11 +233,13 @@
 
   ?p1 <- (persona (nombre ?nom1)(sexo ?sex1)(edad ?eda1)(altura ?alt1)(peso ?pes1)(cuesta_hablar ?cue1)
                   (gusta_salir ?gus1)(amigos ?ami1)(religion ?rel1)(twitter ?twi1)(facebook ?fac1)
-                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc1)(caracter ?caract)(fumador ?fum1))
+                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc1)(caracter ?caract)(fumador ?fum1)
+                  (nuevas-exp ?nuevas1)(responsable ?resp1)(amable ?amab1)(rel-estable ?est1))
 
   ?p2 <- (persona (nombre ?nom2)(sexo ?sex2)(edad ?eda2)(altura ?alt2)(peso ?pes2)(cuesta_hablar ?cue2)
                   (gusta_salir ?gus2)(amigos ?ami2)(religion ?rel2)(twitter ?twi2)(facebook ?fac2)
-                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc2)(caracter ?caract)(fumador ?fum2))
+                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc2)(caracter ?caract)(fumador ?fum2)
+                  (nuevas-exp ?nuevas2)(responsable ?resp2)(amable ?amab2)(rel-estable ?est2))
 
   (test(or (eq ?caract inclasificable)(or (eq ?caract extrovertido)(eq ?caract introvertido))))
 	(test(<> ?sex1 ?sex2))
@@ -238,11 +253,13 @@
 
   ?p1 <- (persona (nombre ?nom1)(sexo ?sex1)(edad ?eda1)(altura ?alt1)(peso ?pes1)(cuesta_hablar ?cue1)
                   (gusta_salir ?gus1)(amigos ?ami1)(religion ?rel1)(twitter ?twi1)(facebook ?fac1)
-                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum1))
+                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum1)
+                  (nuevas-exp ?nuevas1)(responsable ?resp1)(amable ?amab1)(rel-estable ?est1))
 
   ?p2 <- (persona (nombre ?nom2)(sexo ?sex2)(edad ?eda2)(altura ?alt2)(peso ?pes2)(cuesta_hablar ?cue2)
                   (gusta_salir ?gus2)(amigos ?ami2)(religion ?rel2)(twitter ?twi2)(facebook ?fac2)
-                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum2))
+                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum2)
+                  (nuevas-exp ?nuevas2)(responsable ?resp2)(amable ?amab2)(rel-estable ?est2))
 
 	(test (<> ?sex1 ?sex2))
 	(test (<> (str-compare ?rel1 ?rel2) 0))
