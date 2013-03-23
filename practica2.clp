@@ -38,8 +38,9 @@
 
 
 (deffacts participantes
-  
+
   (persona (nombre "persona1")(sexo h)(edad 31)(altura 184)(peso 80)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 10)(religion "ninguna")(twitter FALSE)(facebook TRUE)(fumador TRUE))
+  
   (persona (nombre "persona2")(sexo m)(edad 30)(altura 170)(peso 67)(cuesta_hablar FALSE)(gusta_salir TRUE)(amigos 12)(religion "judia")(twitter TRUE)(facebook TRUE)(fumador FALSE)(sociable 0)(muchos-amigos 0)(caracter 0))
   
   (persona (nombre "persona3")(sexo h)(edad 44)(altura 163)(peso 60)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 9)(religion "catolica")(twitter TRUE)(facebook FALSE)(fumador TRUE)(sociable 0)(muchos-amigos 0)(caracter 0))
@@ -183,44 +184,72 @@
 ;; Modulo compatibilizar
 (defmodule compatibilizar)
 
-(deffunction calc-afinidad (?nomb1 ?nomb2 ?peso1 ?peso2 ?alt1 ?alt2 ?fum1 ?fum2) 
-  (bind ?af 0)
-
-  ;si la diferencia de IMC entre la persona 1 y la persona 2 es menos que 5 sumamos 1 a la afinidad
-  (bind ?imc1 (div ?peso1 (* ?alt1 ?alt1)))
-  (bind ?imc2 (div ?peso2 (* ?alt2 ?alt2)))
+;si la diferencia de IMC entre la persona 1 y la persona 2 es menor que 5
+(deffunction afinidad-imc (?pes1 ?pes2 ?alt1 ?alt2)
+  (bind ?altm1 (/ ?alt1 100)); altura1 en metros
+  (bind ?altm2 (/ ?alt2 100)); altura2 en metros
+  (bind ?imc1 (/ ?pes1 (* ?altm1 ?altm1)))
+  (bind ?imc2 (/ ?pes2 (* ?altm2 ?altm2)))
   (if (<= (abs (- ?imc1 ?imc2)) 5) then
-      ;(printout t  " imc 1" ?imc1 " ; imc2" ?imc2 crlf)
-      (bind ?af (+ ?af 51))
+        (return 1)
+   else (return 0)
   ) 
+)
+
+;si ambos son fumadores o ambos no fumadores
+(deffunction afinidad-fum (?fum1 ?fum2)
   (if (eq ?fum1 ?fum2) then
-    (bind ?af (+ ?af 51))
-  ) 
-   ;(printout t   ?nomb1 " y"  ?nomb2 "tienen una afinidad de " ?af crlf)
-  (return ?af)
+        (return 1)
+   else (return 0)
+  )
+)
+
+;calculo del grado de afinidad, superior a 90 se establece cita mágica
+(deffunction calc-afinidad (?p1 ?p2)
+  (bind ?a1 (* 89 (afinidad-imc ?pes1 ?pes2 ?alt1 ?alt2)))
+  (bind ?a2 (* 10 (afinidad-fum ?fum1 ?fum2)))
+  (bind ?afin (+ ?a1 ?a2))
+  (if (> ?afin 90) then
+    (printout t ?nom1 " y " ?nom2 " tienen grado de afinidad: " ?afin crlf)
+  )
+  (return ?afin)
 )
 
 ;Dos personas son compatibles si tienen distinto sexo, la misma religión y son ambas introvertidas, extrovertidas, o no clasificables.
 (defrule compatibles1
-	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 ) (caracter ?caract)(altura ?alt1)(fumador ?fum1))
-	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 ) (caracter ?caract)(altura ?alt2)(fumador ?fum2))
+
+  ?p1 <- (persona (nombre ?nom1)(sexo ?sex1)(edad ?eda1)(altura ?alt1)(peso ?pes1)(cuesta_hablar ?cue1)
+                  (gusta_salir ?gus1)(amigos ?ami1)(religion ?rel1)(twitter ?twi1)(facebook ?fac1)
+                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc1)(caracter ?caract)(fumador ?fum1))
+
+  ?p2 <- (persona (nombre ?nom2)(sexo ?sex2)(edad ?eda2)(altura ?alt2)(peso ?pes2)(cuesta_hablar ?cue2)
+                  (gusta_salir ?gus2)(amigos ?ami2)(religion ?rel2)(twitter ?twi2)(facebook ?fac2)
+                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc2)(caracter ?caract)(fumador ?fum2))
+
   (test(or (eq ?caract inclasificable)(or (eq ?caract extrovertido)(eq ?caract introvertido))))
 	(test(<> ?sex1 ?sex2))
 	(test (= (str-compare ?rel1 ?rel2) 0))
 	;solo se comprueban duplicados a la hora de hacer las citas
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2 ?alt1 ?alt2 ?fum1 ?fum2))))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?p1 ?p2))))
 )
 ;También consideramos compatibles a las que ambas son no-clasificables, tienen distinto sexo, distinta religión, y tienen muchos Amigos.
 (defrule compatibles2
-	?p1 <- (persona(nombre ?nom1)(peso ?pes1)(sexo ?sex1 )(religion ?rel1 )(muchos-amigos ?muc)(caracter ?caract)(altura ?alt1)(fumador ?fum1))
-	?p2 <- (persona(nombre ?nom2)(peso ?pes2)(sexo ?sex2 )(religion ?rel2 )(muchos-amigos ?muc)(caracter ?caract)(altura ?alt2)(fumador ?fum2))
-	(test(<> ?sex1 ?sex2))
+
+  ?p1 <- (persona (nombre ?nom1)(sexo ?sex1)(edad ?eda1)(altura ?alt1)(peso ?pes1)(cuesta_hablar ?cue1)
+                  (gusta_salir ?gus1)(amigos ?ami1)(religion ?rel1)(twitter ?twi1)(facebook ?fac1)
+                  (timido ?tim1)(sociable ?soc1)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum1))
+
+  ?p2 <- (persona (nombre ?nom2)(sexo ?sex2)(edad ?eda2)(altura ?alt2)(peso ?pes2)(cuesta_hablar ?cue2)
+                  (gusta_salir ?gus2)(amigos ?ami2)(religion ?rel2)(twitter ?twi2)(facebook ?fac2)
+                  (timido ?tim2)(sociable ?soc2)(muchos-amigos ?muc)(caracter ?caract)(fumador ?fum2))
+
+	(test (<> ?sex1 ?sex2))
 	(test (<> (str-compare ?rel1 ?rel2) 0))
 	(test (eq ?caract inclasificable))
 	(test (eq ?muc TRUE))
 	=>
-	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?nom1 ?nom2 ?pes1 ?pes2 ?alt1 ?alt2 ?fum1 ?fum2))))
+	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?p1 ?p2))))
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
