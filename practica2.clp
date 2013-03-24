@@ -189,6 +189,7 @@
 (defmodule compatibilizar)
 
 ;mismos objetivos: apertura a nuevas experiencias, responsabilidad, amabilidad y estabilidad emocional
+;fuente: http://www.muyinteresante.es/innovacion/sociedad/articulo/test-de-compatibilidad-para-encontrar-tu-pareja-ideal
 (deffunction afinidad-objetivos (?nuevas1 ?nuevas2 ?resp1 ?resp2 ?amab1 ?amab2 ?est1 ?est2)
   (bind ?af 0)
   (if (eq ?nuevas1 ?nuevas2)  then
@@ -207,6 +208,8 @@
 )
 
 ;si la diferencia de IMC entre la persona 1 y la persona 2 es menor que 5
+;fuentes: http://es.wikipedia.org/wiki/Canon_de_belleza 
+; http://es.wikipedia.org/wiki/%C3%8Dndice_de_masa_corporal
 (deffunction afinidad-imc (?pes1 ?pes2 ?alt1 ?alt2)
   (bind ?altm1 (/ ?alt1 100)); altura1 en metros
   (bind ?altm2 (/ ?alt2 100)); altura2 en metros
@@ -219,6 +222,7 @@
 )
 
 ;si ambos son fumadores o ambos no fumadores
+;fuente: http://www.edarling.es/consejos/familia/mis-hijos-no-aceptan-a-mi-pareja
 (deffunction afinidad-fum (?fum1 ?fum2)
   (if (eq ?fum1 ?fum2) then
         (return 0.5)
@@ -226,13 +230,17 @@
   )
 )
 
-;calculo del grado de afinidad, superior a 90 se establece cita mágica
+;calculo del grado de afinidad, con un grado de afinidad mayor que 70 se establecen citas mágicas 
 (deffunction calc-afinidad (?p1 ?p2)
+  ;grado de afinidad imc entre [0-1] * 20=> (0% - 20%)
   (bind ?a1 (* 20 (afinidad-imc ?pes1 ?pes2 ?alt1 ?alt2)))
-  (bind ?a2 (* 20 (afinidad-fum ?fum1 ?fum2)))
+  ;grado de afinidad fumadores entre [0-1] * 20 => (0% - 20%)
+  (bind ?a2 (* 20 (afinidad-fum ?fum1 ?fum2))) 
+  ;grado de afinidad por objetivos entre [0-4] * 20=> (0% - 60%)
   (bind ?a3 (* 20 (afinidad-objetivos ?nuevas1 ?nuevas2 ?resp1 ?resp2 ?amab1 ?amab2 ?est1 ?est2)))
+  ;grado de afinidad total (0% - 100%)
   (bind ?afin (+ ?a1 (+ ?a2 ?a3)))
-  ;(printout t ?nom1 " y " ?nom2 " tienen grado de afinidad: " ?afin crlf)
+  ;;(printout t ?nom1 " y " ?nom2 " tienen grado de afinidad: " ?afin crlf)
   (return ?afin)
 )
 
@@ -256,6 +264,7 @@
 	=>
 	(assert(compatibles(persona1 ?p1)(persona2 ?p2)(afinidad (calc-afinidad ?p1 ?p2))))
 )
+
 ;También consideramos compatibles a las que ambas son no-clasificables, tienen distinto sexo, distinta religión, y tienen muchos Amigos.
 (defrule compatibles2
 
@@ -285,6 +294,7 @@
   (declare (salience 100))
   ?p1<-(persona(nombre ?nom1)(edad ?eda1))
   ?p2<-(persona(nombre ?nom2)(edad ?eda2))
+  ;Se establecen citas mágicas con un grado de afinidad mayor que 70
   (compatibles (persona1 ?p1)(persona2 ?p2)(afinidad ?afin&:(>= ?afin 70)))
   ;Sólo se citan una vez a las mismas dos personas.
   (not (citados (persona1 ?p1)(persona2 ?p2)))
@@ -296,7 +306,7 @@
   (not (citados (persona2 ?p2)(tipo-cita ?tc&:(eq ?tc magica))))
   =>
   (assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita magica)))
-  (printout t ?nom1 " y " ?nom2 " tienen una cita magica!!!!!!!!!" crlf)
+  ;(printout t ?nom1 " y " ?nom2 " tienen una cita magica!!!!!!!!!" crlf)
 )
 
 ;Se puede concertar una cita si dos personas son compatibles, siempre que su diferencia de edad sea menor de 10 años. Sólo se citan una vez a las mismas dos personas.
@@ -311,7 +321,7 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
+	;(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
 )
 
 ;También citamos a las personas compatibles con diferencia de edad mayor de 10 años si su edad está por encima de los 50 años.
@@ -327,17 +337,17 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
+	;(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Modulo printear
-(defmodule printear)
+;; Modulo mostrar
+(defmodule mostrar)
 
 (defrule mostrar-template
 	?persona <-(persona (nombre ?nom)(sexo ?sex)(edad ?eda)(altura ?alt)(peso ?pes)(cuesta_hablar ?cue)(gusta_salir ?gus)(amigos ?ami)(religion ?rel)(twitter ?twi)(facebook ?fac)(timido ?tim)(sociable ?soc)(muchos-amigos ?muc)(caracter ?car))
 	=>
-	;(printout t "[nombre "?nom ", sexo " ?sex ", edad " ?eda ", altura " ?alt ", peso "?pes ", cuesta_hablar " ?cue ", gusta_salir " ?gus ", num amigos " ?ami ", religion " ?rel ", twitter " ?twi ", facebook" ?fac ", timido "?tim ", sociable " ?soc ", muchos_amigos " ?muc ", caracter " ?car "]"  crlf)
+	;;(printout t "[nombre "?nom ", sexo " ?sex ", edad " ?eda ", altura " ?alt ", peso "?pes ", cuesta_hablar " ?cue ", gusta_salir " ?gus ", num amigos " ?ami ", religion " ?rel ", twitter " ?twi ", facebook" ?fac ", timido "?tim ", sociable " ?soc ", muchos_amigos " ?muc ", caracter " ?car "]"  crlf)
 )
 
 (defrule mostrar-compatible1
@@ -345,8 +355,16 @@
 	?p2<-(persona(nombre ?nom2))
 	(compatibles (persona1 ?p1)(persona2 ?p2)(afinidad ?af))
 	=>
-	;(printout t ?nom1 " y " ?nom2 " son compatibles ^^" crlf)
-  ;(printout t ?nom1 " y " ?nom2 " tienen una compatibilidad de " ?af crlf)
+	;;(printout t ?nom1 " y " ?nom2 " son compatibles ^^" crlf)
+  ;;(printout t ?nom1 " y " ?nom2 " tienen una compatibilidad de " ?af crlf)
+)
+
+(defrule mostrar-citas
+  ?p1<-(persona(nombre ?nom1))
+  ?p2<-(persona(nombre ?nom2))
+  (citados (persona1 ?p1)(persona2 ?p2)(tipo-cita ?tc))
+  =>
+  (printout t ?nom1 " y " ?nom2 " tienen una cita " ?tc crlf)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,9 +372,8 @@
 
 (deffunction run-system ()
   (reset)
-  (focus clasificar compatibilizar citar printear)
+  (focus clasificar compatibilizar citar mostrar)
   (run)
-  (facts)
 )
 
 ;(while TRUE
