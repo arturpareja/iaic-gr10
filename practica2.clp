@@ -122,8 +122,7 @@
   (persona (nombre "persona39")(sexo h)(edad 43)(altura 181)(peso 77)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 16)(religion "catolica")(twitter FALSE)(facebook FALSE)(fumador FALSE)(nuevas-exp TRUE)(responsable FALSE)(amable TRUE)(rel-estable TRUE))
   
   (persona (nombre "persona40")(sexo m)(edad 50)(altura 165)(peso 68)(cuesta_hablar TRUE)(gusta_salir FALSE)(amigos 18)(religion "ninguna")(twitter TRUE)(facebook TRUE)(fumador TRUE)(nuevas-exp FALSE)(responsable FALSE)(amable TRUE)(rel-estable FALSE))
-  
-  
+   
 )
 
 (defglobal ?*crlf* = "
@@ -240,7 +239,7 @@
   (bind ?a3 (* 20 (afinidad-objetivos ?nuevas1 ?nuevas2 ?resp1 ?resp2 ?amab1 ?amab2 ?est1 ?est2)))
   ;grado de afinidad total (0% - 100%)
   (bind ?afin (+ ?a1 (+ ?a2 ?a3)))
-  ;;(printout t ?nom1 " y " ?nom2 " tienen grado de afinidad: " ?afin crlf)
+
   (return ?afin)
 )
 
@@ -306,7 +305,6 @@
   (not (citados (persona2 ?p2)(tipo-cita ?tc&:(eq ?tc magica))))
   =>
   (assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita magica)))
-  ;(printout t ?nom1 " y " ?nom2 " tienen una cita magica!!!!!!!!!" crlf)
 )
 
 ;Se puede concertar una cita si dos personas son compatibles, siempre que su diferencia de edad sea menor de 10 años. Sólo se citan una vez a las mismas dos personas.
@@ -321,7 +319,6 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	;(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
 )
 
 ;También citamos a las personas compatibles con diferencia de edad mayor de 10 años si su edad está por encima de los 50 años.
@@ -337,27 +334,11 @@
   (not (citados (persona1 ?p2)(persona2 ?p1)))
 	=>
 	(assert(citados(persona1 ?p1)(persona2 ?p2)(tipo-cita normal)))
-	;(printout t ?nom1 " y " ?nom2 " estan citados" crlf)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modulo mostrar
 (defmodule mostrar)
-
-(defrule mostrar-template
-	?persona <-(persona (nombre ?nom)(sexo ?sex)(edad ?eda)(altura ?alt)(peso ?pes)(cuesta_hablar ?cue)(gusta_salir ?gus)(amigos ?ami)(religion ?rel)(twitter ?twi)(facebook ?fac)(timido ?tim)(sociable ?soc)(muchos-amigos ?muc)(caracter ?car))
-	=>
-	;;(printout t "[nombre "?nom ", sexo " ?sex ", edad " ?eda ", altura " ?alt ", peso "?pes ", cuesta_hablar " ?cue ", gusta_salir " ?gus ", num amigos " ?ami ", religion " ?rel ", twitter " ?twi ", facebook" ?fac ", timido "?tim ", sociable " ?soc ", muchos_amigos " ?muc ", caracter " ?car "]"  crlf)
-)
-
-(defrule mostrar-compatible1
-	?p1<-(persona(nombre ?nom1))
-	?p2<-(persona(nombre ?nom2))
-	(compatibles (persona1 ?p1)(persona2 ?p2)(afinidad ?af))
-	=>
-	;;(printout t ?nom1 " y " ?nom2 " son compatibles ^^" crlf)
-  ;;(printout t ?nom1 " y " ?nom2 " tienen una compatibilidad de " ?af crlf)
-)
 
 (defrule mostrar-citas
   ?p1<-(persona(nombre ?nom1))
@@ -376,5 +357,4 @@
   (run)
 )
 
-;(while TRUE
-  (run-system);)
+(run-system)
